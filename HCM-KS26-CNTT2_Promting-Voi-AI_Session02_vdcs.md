@@ -43,7 +43,7 @@ actual_date: Ngày giao mới
 
 ### Context:
 
-Hãy đóng vai là nhân viên soạn thảo tin nhắn xin lỗi trong định dạng Json rồi gửi cho cửa hàng Techshop. 
+Hãy đóng vai là nhân viên soạn thảo tin nhắn xin lỗi trong định dạng Json rồi gửi cho cửa hàng Techshop để họ huấn luyện AI. 
 
 ### Request:
 
