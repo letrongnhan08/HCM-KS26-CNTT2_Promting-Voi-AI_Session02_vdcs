@@ -3,13 +3,15 @@
 **Bước 1: Thiết kế giải pháp (I/O)**
 Input (Đầu vào):
 
-- **Thông tin đơn hàng:** Mã vận đơn, tên khách hàng, ngày dự kiến giao, số ngày giao trễ thực tế.
+- **Thông tin đơn hàng:** Mã đơn hàng, tên khách hàng, ngày dự kiến giao, số ngày giao trễ thực tế.
 
 - **Nội dung tin nhắn,phản hồi của khách hàng:** Tin nhắn phàn nàn gốc gửi về hệ thống CSKH
 
 **Chính sách bồi thường của cửa hàng:**
 
-- Trễ từ 1 - 2 ngày: Xin lỗi khách hàng kèm mã giảm giá 10% cho đơn sau.
+- Trễ từ 1 ngày: Xin lỗi khách hàng kèm mã giảm giá 5% cho đơn sau.
+
+- Trễ từ 2 ngày: Xin lỗi khách hàng kèm mã giảm giá 10% cho đơn sau.
  
 - Trễ từ 3 - 5 ngày: Xin lỗi  khách hàng kèm miễn phí vận chuyển và mã giảm giá 15%.
 
@@ -41,11 +43,11 @@ actual_date: Ngày giao mới
 
 ### Context:
 
-Hãy đóng vai là nhân viên soạn thảo tin nhắn xin lỗi và ép sang định dạng Json cho cửa hàng Techshop. 
+Hãy đóng vai là nhân viên soạn thảo tin nhắn xin lỗi trong định dạng Json rồi gửi cho cửa hàng Techshop. 
 
 ### Request:
 
-Nhiệm vụ của bạn là tiếp nhận thông tin phản hồi của khách hàng về việc giao hàng chậm, xử lý vấn đề và soạn một bản mẫu tin nhắn email xin lỗi chuyên nghiệp. Và tiếp là ép sang định dạng Json cho nhân viên Techshop đọc
+Nhiệm vụ của bạn là tiếp nhận thông tin nháp là phản hồi  của khách hàng về việc giao hàng chậm, xử lý vấn đề và soạn một bản mẫu tin nhắn email xin lỗi chuyên nghiệp trong định dạng Json rồi cho nhân viên Techshop đọc để họ huấn luyện tạo cải thiện AI tốt hơn
 
 ### Explanation:
 
@@ -56,9 +58,12 @@ Nhiệm vụ của bạn là tiếp nhận thông tin phản hồi của khách 
 ### Action:
 
 1. Đọc kỹ thông tin đơn hàng và phản hồi của khách hàng được cung cấp ở phần [INPUT]. 
+
 2. Xác định số ngày trễ và đối chiếu với chính sách bồi thường. 
-3. Trả lời tin nhắn xin lỗi khách hàng phù hợp. 
-4. Rồi trả kết quả theo định dạng JSON cho nhân viên Techshop kiểm thử
+   
+3. Trả lời tin nhắn xin lỗi khách hàng phù hợp.
+
+4. Rồi đưa kết quả  JSON cho nhân viên Techshop kiểm thử
 
 ### Tone:
 
@@ -67,7 +72,7 @@ Nhiệm vụ của bạn là tiếp nhận thông tin phản hồi của khách 
 ### Extras:
 
 
-Trả lời tin nhắn xong xuất  kết quả theo định dạng JSON cho cửa hàng Techshop
+Trả lời tin nhắn xuất  kết quả theo định dạng JSON cho cửa hàng Techshop
 
 
 ### FEW-SHOT EXAMPLES (VÍ DỤ MẪU):
@@ -91,14 +96,34 @@ Output: {
    "note_for_staff": "Đã xử lý tự động theo chính sách trễ 2 ngày." 
 }
 
+Ví dụ 2:
+Input: {
+   "customer_name": "Sang Le H",
+   "tracking_number": "MH24680",
+   "expected_date": "2026-11-02",
+   "actual_date": "2026-11-03",
+   "customer_message": "Chán! thế nhờ, app gì đâu mà chậm thế ?, giao diện đã chậm, liên hệ nhân viên nhấc máy cũng chậm, và giao hàng cũng chậm, cái gì cũng chậm!!! "
+}
+
+Output: {
+   "status": "success",
+   "customer_name": "Sang Le H",
+   "delay_days": 1,
+   "tracking_number": "MH24680",
+   "compensation_applied": "Mã giảm giá 5% cho đơn hàng tiếp theo",
+   "draft_message": "Xin lỗi quý khách về sự bất tiện này,Do cửa hàng chúng tôi còn hạn chế ngân sách,mong quý khách thông cảm. Để đền bù do quý khách đã có trải nghiệm không tốt,chúng tôi sẽ cải thiện app lại sau và cửa hàng chúng tôi gửi tặng quý khách mã giảm giá 5% cho đơn hàng tiếp theo. Mong quý khách thông cảm cho cửa hàng!",
+   "note_for_staff": "Đã xử lý tự động theo chính sách trễ 1 ngày." 
+}
+
+
 ACTUAL INPUT (DỮ LIỆU THỰC TẾ CẦN XỬ LÝ) 
 
 Input: { 
   "customer_name": "Trần Thị B", 
   "tracking_number": "MH56789", 
   "expected_date": "2026-10-18", 
-  "actual_date": "2026-10-21", 
-  "customer_message": "Tôi đã đặt đơn hàng này từ ngày 20 mà qua nhiều ngày vẫn không có hàng, gọi điện thoại cho cửa hàng vẫn bảo chị cứ chờ đợi"
+  "actual_date": "2026-10-22", 
+  "customer_message": "Tôi đã đặt đơn hàng này từ ngày 18 mà qua nhiều vẫn không có hàng, gọi điện thoại cho cửa hàng vẫn bảo chị cứ chờ đợi, đến ngày 22 mới có"
   }
 
 OUTPUT FORMAT (JSON ONLY)
@@ -108,8 +133,8 @@ Output: {
   "status": "success", 
   "customer_name": "Trần Thị B", 
   "tracking_number": "MH56789", 
-  "delay_days": 3, 
+  "delay_days": 4, 
   "compensation_applied": "Miễn phí vận chuyển + Mã giảm giá 15%", 
   "draft_message": "Xin lỗi quý khách về sự bất tiện này, cửa hàng thành thật xin lỗi quý khách vì có trải nghiệm chưa tốt từ cửa hàng cứ bảo chờ đợi hàng gửi đến. Để đền bù cửa hàng chúng tôi xin gửi tặng chị ưu đãi miễn phí vận chuyển kèm mã giảm giá 15% cho đơn hàng kế tiếp để đền bù cho sự bất tiện này. Mong quý khách thông cảm.", 
-  "note_for_staff": "Đơn hàng trễ 5 ngày, áp dụng mức đền bù cao" 
+  "note_for_staff": "Đơn hàng trễ 4 ngày, áp dụng mức đền bù cao" 
   }
